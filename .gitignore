@@ -1,0 +1,45 @@
+# Java & Gradle
+*.class
+*.jar
+*.war
+*.iml
+*.log
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.ipr
+*.iml
+out/
+
+# VSCode
+.vscode/
+
+# OS 관련
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+*.db
+*.h2.db
+*.mv.db
+
+# 환경 설정 파일 (개인 DB 계정, 비번 등)
+application-local.properties
+application-local.yml
+.env
+
+# 로그 파일
+logs/
+*.log
+
+# 테스트 결과
+test-output/
+
+# 기타
+node_modules/
