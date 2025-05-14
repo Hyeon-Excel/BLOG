@@ -20,7 +20,15 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // 관리자 권한이 필요한 요청
+                        .requestMatchers("/api/posts/**").hasRole("ADMIN")
+                        .requestMatchers("/api/categories/**").hasRole("ADMIN")
+
+                        // 읽기 전용 GET 요청은 모두 허용
+                        .requestMatchers("/api/posts", "/api/posts/**").permitAll()
+                        .requestMatchers("/api/categories", "/api/categories/**").permitAll()
+
+                        // 기타는 모두 허용
                         .anyRequest().permitAll())
                 .formLogin(Customizer.withDefaults());
 
@@ -31,7 +39,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetails admin = User
                 .withUsername("admin")
-                .password("{noop}admin1234") // 추후 BCrypt 사용 권장
+                .password("{noop}admin1234") // ⚠️ 개발용 비밀번호
                 .roles("ADMIN")
                 .build();
 

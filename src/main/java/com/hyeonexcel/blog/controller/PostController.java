@@ -1,7 +1,9 @@
 package com.hyeonexcel.blog.controller;
 
-import com.hyeonexcel.blog.domain.post.Post;
+import com.hyeonexcel.blog.dto.PostDto;
 import com.hyeonexcel.blog.service.PostService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,28 +18,28 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostDto>> getAllPosts() {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<Post>> getPostsByCategory(@PathVariable Long categoryId) {
+    public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable Long categoryId) {
         return ResponseEntity.ok(postService.getPostsByCategory(categoryId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> getPost(@PathVariable Long id) {
+    public ResponseEntity<PostDto> getPost(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPost(id));
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        return ResponseEntity.ok(postService.createPost(post));
+    public ResponseEntity<PostDto> createPost(@RequestBody @Valid PostDto dto) {
+        return ResponseEntity.ok(postService.createPost(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
-        return ResponseEntity.ok(postService.updatePost(id, post));
+    public ResponseEntity<PostDto> updatePost(@PathVariable Long id, @RequestBody @Valid PostDto dto) {
+        return ResponseEntity.ok(postService.updatePost(id, dto));
     }
 
     @DeleteMapping("/{id}")
