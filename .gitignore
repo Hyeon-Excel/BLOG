@@ -1,45 +1,70 @@
-# Java & Gradle
+#####################
+# 🔧 Java & Gradle
+#####################
 *.class
 *.jar
 *.war
 *.iml
 *.log
 
-# Gradle
 .gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
-# IntelliJ IDEA
+#####################
+# 💡 Spring Boot
+#####################
+*.db
+*.h2.db
+*.mv.db
+application-local.properties
+application-local.yml
+.env
+
+logs/
+logs/*.log
+
+#####################
+# 💻 IntelliJ
+#####################
 .idea/
 *.iws
 *.ipr
 *.iml
 out/
 
-# VSCode
+#####################
+# 💻 VSCode
+#####################
 .vscode/
+!.vscode/extensions.json
 
-# OS 관련
+#####################
+# 💻 Node.js / React
+#####################
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+#####################
+# 🖥️ OS / Editor 환경
+#####################
 .DS_Store
 Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Spring Boot
-*.db
-*.h2.db
-*.mv.db
-
-# 환경 설정 파일 (개인 DB 계정, 비번 등)
-application-local.properties
-application-local.yml
-.env
-
-# 로그 파일
-logs/
-*.log
-
-# 테스트 결과
+#####################
+# ✅ 테스트 결과 (공통)
+#####################
 test-output/
-
-# 기타
-node_modules/
+coverage/
