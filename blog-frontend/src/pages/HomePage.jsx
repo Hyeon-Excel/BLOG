@@ -3,26 +3,39 @@ import api from "../api/axios";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
       .get("/posts")
-      .then((response) => setPosts(response.data))
-      .catch((error) => console.error("Error fetching posts:", error));
+      .then((response) => {
+        setPosts(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("❌ Error fetching posts:", error);
+        setLoading(false);
+      });
   }, []);
 
+  if (loading) return <p>로딩 중...</p>;
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: "2rem" }}>
       <h1>블로그 글 목록</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <strong>{post.title}</strong>
-            <br />
-            <span>{post.createdAt}</span>
-          </li>
-        ))}
-      </ul>
+      {posts.length === 0 ? (
+        <p>등록된 글이 없습니다.</p>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {posts.map((post) => (
+            <li key={post.id} style={{ marginBottom: "1rem" }}>
+              <h3>{post.title}</h3>
+              <p>{new Date(post.createdAt).toLocaleString()}</p>
+              {/* 향후 /post/:id 상세 페이지로 링크도 추가 가능 */}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

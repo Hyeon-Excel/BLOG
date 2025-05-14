@@ -51,6 +51,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+# Vite 캐시
+.vite/
+
 
 #####################
 # 🖥️ OS / Editor 환경
@@ -68,3 +71,8 @@ Thumbs.db
 #####################
 test-output/
 coverage/
+
+#####################
+# 🔐 민감한 설정 분리
+#####################
+**/application-local.yml
