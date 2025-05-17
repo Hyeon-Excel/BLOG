@@ -21,6 +21,24 @@ function PostPage() {
       });
   }, [id]);
 
+  const handleDelete = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      api
+        .delete(`/posts/${id}`)
+        .then(() => {
+          alert("삭제 완료!");
+          navigate("/");
+        })
+        .catch((err) => {
+          // 상태 코드가 204인데도 에러로 인식될 수 있으므로 예외 필터링
+          if (err.response && err.response.status !== 204) {
+            console.error("삭제 실패:", err);
+            alert("삭제 중 오류가 발생했습니다.");
+          }
+        });
+    }
+  };
+
   if (loading) return <p>로딩 중...</p>;
   if (!post) return <p>글을 찾을 수 없습니다.</p>;
 
@@ -35,6 +53,12 @@ function PostPage() {
       <Link to={`/post/${post.id}/edit`}>
         <button>수정</button>
       </Link>
+      <button
+        onClick={handleDelete}
+        style={{ marginLeft: "1rem", color: "red" }}
+      >
+        삭제
+      </button>
     </div>
   );
 }
