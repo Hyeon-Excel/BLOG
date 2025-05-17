@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -18,19 +23,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults()) // ✅ React와 통신 허용
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        // 관리자 권한이 필요한 요청
-                        .requestMatchers("/api/posts/**").hasRole("ADMIN")
-                        .requestMatchers("/api/categories/**").hasRole("ADMIN")
-
-                        // 읽기 전용 GET 요청은 모두 허용
-                        .requestMatchers("/api/posts", "/api/posts/**").permitAll()
-                        .requestMatchers("/api/categories", "/api/categories/**").permitAll()
-
-                        // 기타는 모두 허용
+                        .requestMatchers("/api/categories/**").permitAll() // 카테고리 API 전체 허용
+                        .requestMatchers("/api/posts/**").permitAll() // 게시글 API 전체 허용
                         .anyRequest().permitAll())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(Customizer.withDefaults()); // 기본 로그인 폼
 
         return http.build();
     }
@@ -39,10 +38,24 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetails admin = User
                 .withUsername("admin")
-                .password("{noop}admin1234") // ⚠️ 개발용 비밀번호
+                .password("{noop}admin1234") // ⚠️ 개발용 비밀번호 (추후 BCrypt로 변경 예정)
                 .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(admin);
+    }
+
+    // ✅ CORS 설정 추가 (React 개발 서버 허용)
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 }
