@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -29,9 +30,10 @@ function HomePage() {
         <ul style={{ listStyle: "none", padding: 0 }}>
           {posts.map((post) => (
             <li key={post.id} style={{ marginBottom: "1rem" }}>
-              <h3>{post.title}</h3>
+              <Link to={`/post/${post.id}`}>
+                <h3>{post.title}</h3>
+              </Link>
               <p>{new Date(post.createdAt).toLocaleString()}</p>
-              {/* 향후 /post/:id 상세 페이지로 링크도 추가 가능 */}
             </li>
           ))}
         </ul>
