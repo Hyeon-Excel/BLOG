@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 
@@ -31,6 +32,9 @@ function PostPage() {
       <p style={{ marginTop: "1rem", fontStyle: "italic" }}>
         카테고리: {post.categoryId ? `#${post.categoryId}` : "없음"}
       </p>
+      <Link to={`/post/${post.id}/edit`}>
+        <button>수정</button>
+      </Link>
     </div>
   );
 }
