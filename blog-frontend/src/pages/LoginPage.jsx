@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 
 function LoginPage() {
@@ -8,7 +8,11 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const { setUsername: setAuthUsername } = useAuthContext();
+
+  // 로그인 전 원래 페이지 정보 (없으면 / 로 fallback)
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,9 +30,9 @@ function LoginPage() {
         withCredentials: true,
       });
 
-      setAuthUsername(username); // ✅ 전역 Context 로그인 상태 변경
+      setAuthUsername(username); // ✅ 전역 로그인 상태 갱신
       alert("로그인 성공!");
-      navigate("/");
+      navigate(from); // ✅ 원래 가려던 경로로 이동
     } catch (err) {
       setError("❌ 로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
     }
