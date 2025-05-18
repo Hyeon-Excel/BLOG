@@ -5,7 +5,7 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: false // Spring Security 세션 인증 사용 시 true로
+    withCredentials: true
 });
 
 export default api;
