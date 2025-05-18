@@ -1,13 +1,14 @@
-import axios from "axios"; // ✅ 이 줄 추가
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
+import { useAuthContext } from "../context/AuthContext";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUsername: setAuthUsername } = useAuthContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,7 +19,6 @@ function LoginPage() {
     formData.append("password", password);
 
     try {
-      // 🔥 Spring Security는 /login (root)에서 처리해야 함
       await axios.post("http://localhost:8080/login", formData, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -26,6 +26,7 @@ function LoginPage() {
         withCredentials: true,
       });
 
+      setAuthUsername(username); // ✅ 전역 Context 로그인 상태 변경
       alert("로그인 성공!");
       navigate("/");
     } catch (err) {

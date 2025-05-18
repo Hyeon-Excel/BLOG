@@ -1,18 +1,13 @@
-import { useEffect, useState } from 'react';
-import api from '../api/axios';
+import { useAuthContext } from '../context/AuthContext';
 
 function useAuth() {
-    const [username, setUsername] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const { username, loading } = useAuthContext();
 
-    useEffect(() => {
-        api.get('/auth/me')
-            .then(res => setUsername(res.data))
-            .catch(() => setUsername(null))
-            .finally(() => setLoading(false));
-    }, []);
-
-    return { username, loading, isAdmin: username === 'admin' };
+    return {
+        username,
+        loading,
+        isAdmin: username === 'admin'
+    };
 }
 
 export default useAuth;
