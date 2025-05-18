@@ -1,17 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import logout from "../api/logout";
 import useAuth from "../hooks/useAuth";
-import { useAuthContext } from "../context/AuthContext";
 
 function Header() {
+  const { username, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
-  const { username, isAdmin } = useAuth();
-  const { setUsername } = useAuthContext();
 
   const handleLogout = async () => {
     try {
       await logout();
-      setUsername(null); // ✅ Context 상태 초기화
       alert("로그아웃 완료!");
       navigate("/");
     } catch {
